@@ -1,6 +1,23 @@
+import unicodedata
+
+
 def unicode_to_utf8(text):
-    return text
+    return unicodedata.normalize("NFKD", text).encode("utf-8", "ignore")
 
 
 def beautify_text(text):
-    return text
+    words = text.split()
+    no_spaces_text = ""
+    for word in words:
+        if word != "":
+            no_spaces_text += word
+
+    beautified_text = ""
+    for i in range(len(no_spaces_text)):
+        if 'A' <= no_spaces_text[i] <= 'Z':
+            beautified_text += " " + no_spaces_text[i]
+        else:
+            beautified_text += no_spaces_text[i]
+    beautified_text = beautified_text.strip()
+
+    return beautified_text
