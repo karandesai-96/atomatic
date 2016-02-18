@@ -8,4 +8,8 @@ def test_unicode_to_utf8():
 
 
 def test_beautify_text():
-    pass
+    beautified_text = tu.beautify_text("  Test Text ")
+    assert beautified_text == "Test Text"
+
+    beautified_text = tu.beautify_text("TestText Test   Text  ")
+    assert beautified_text == "Test Text Test Text"
