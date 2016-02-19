@@ -58,4 +58,7 @@ def fetch_row(row):
         df_record["Symbol"] = tu.unicode_to_utf8(row_data[2].text)
         row_data.pop(1)
 
+    # third entry in record will be number of nucleons (stored as integer)
+    df_record["Nucleons"] = int(tu.unicode_to_utf8(row_data[2].text))
+
     return df_record
