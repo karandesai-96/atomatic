@@ -23,7 +23,7 @@ def fetch_atomic_dataset():
     # boilerplate code for quick debugging assistance
     for _ in range(4, 20):
         df_record = fetch_row(rows[_])
-        if df_record["Symbol"] is not None:
+        if df_record is not None:
             print df_record
     return
 
@@ -33,6 +33,10 @@ def fetch_row(row):
     df_record = dict()
 
     row_data = row.find_all("td")
+
+    # ignoring the row containing blue line
+    if row_data[0].get("colspan") == "9":
+        return None
 
     if row_data[0].get("valign") == "top":
         # this happens when the record is a new element - Z will be followed by
@@ -44,7 +48,7 @@ def fetch_row(row):
         # Z and symbol entries in record will be missing (except H, D, T)
         df_record["Z"] = None
         df_record["Symbol"] = None
-        # dummy elements in row_data : Z at index 0 and symbol at index 1
+        # dummy entries in row_data : Z at index 0 and symbol at index 1
         row_data.insert(0, None)
         row_data.insert(1, None)
 
