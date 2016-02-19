@@ -1,5 +1,5 @@
 from utils import soup_utils as su
-import unicodedata
+from utils import text_utils as tu
 
 
 def fetch_atomic_dataset():
@@ -16,5 +16,9 @@ def fetch_table_headings(soup):
 
     for heading in soup.find_all("th", attrs={'valign': 'bottom'}):
         headings.append(heading.text)
+
+    for i in range(len(headings)):
+        headings[i] = tu.unicode_to_utf8(headings[i])
+        headings[i] = tu.beautify_text(headings[i])
 
     return headings
