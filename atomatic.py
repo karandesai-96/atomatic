@@ -67,6 +67,16 @@ def fetch_row(row):
     text = float(text)
     df_record["Relative Atomic Mass"] = text
 
+    # fifth entry in record will be isotopic composition of that isotope
+    # try-except block is needed as this entry might be absent
+    try:
+        text = tu.unicode_to_utf8(row_data[4].text)
+        text = text.split("(")[0].replace(" ", "")
+        text = float(text)
+        df_record["Isotopic Composition"] = text
+    except ValueError:
+        df_record["Isotopic Composition"] = None
+
     return df_record
 
 
