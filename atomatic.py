@@ -61,4 +61,13 @@ def fetch_row(row):
     # third entry in record will be number of nucleons (stored as integer)
     df_record["Nucleons"] = int(tu.unicode_to_utf8(row_data[2].text))
 
+    # fourth entry in record will be relative atomic mass of that isotope
+    text = tu.unicode_to_utf8(row_data[3].text)
+    text = int(text.split("(")[0])
+    df_record["Relative Atomic Mass"] = text
+
     return df_record
+
+
+if __name__ == "__main__":
+    fetch_atomic_dataset()
