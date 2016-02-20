@@ -63,7 +63,8 @@ def fetch_row(row):
 
     # fourth entry in record will be relative atomic mass of that isotope
     text = tu.unicode_to_utf8(row_data[3].text)
-    text = int(text.split("(")[0])
+    text = text.split("(")[0].replace(" ", "")
+    text = float(text)
     df_record["Relative Atomic Mass"] = text
 
     return df_record
