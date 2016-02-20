@@ -20,11 +20,6 @@ def fetch_atomic_dataset():
 
     rows = physics_nist_soup.find_all("tr")
 
-    # boilerplate code for quick debugging assistance
-    for _ in range(8, 10):
-        df_record = fetch_row(rows[_])
-        if df_record is not None:
-            print df_record
     return
 
 
