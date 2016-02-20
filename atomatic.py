@@ -21,14 +21,13 @@ def fetch_atomic_dataset():
     rows = physics_nist_soup.find_all("tr")
 
     # boilerplate code for quick debugging assistance
-    for _ in range(4, 20):
+    for _ in range(8, 10):
         df_record = fetch_row(rows[_])
         if df_record is not None:
             print df_record
     return
 
 
-# incomplete
 def fetch_row(row):
     df_record = dict()
 
@@ -78,7 +77,3 @@ def fetch_row(row):
         df_record["Isotopic Composition"] = None
 
     return df_record
-
-
-if __name__ == "__main__":
-    fetch_atomic_dataset()
