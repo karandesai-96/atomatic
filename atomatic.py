@@ -19,7 +19,10 @@ def fetch_atomic_dataset():
     atomic_dataset = pd.DataFrame(columns=headings)
 
     rows = physics_nist_soup.find_all("tr")
-
+    for _ in range(4, 15):
+        df_record = fetch_row(rows[_])
+        if df_record is not None:
+            print df_record
     return
 
 
@@ -71,4 +74,31 @@ def fetch_row(row):
     except ValueError:
         df_record["Isotopic Composition"] = None
 
+    # these entries are only present in record of first isotope of any element
+    if row_data[0] is not None:
+        df_record = parse_std_atomic_weight_and_notes(row, df_record)
     return df_record
+
+
+def parse_std_atomic_weight_and_notes(row, df_record):
+    std_atomic_weight = row.find_next_sibling("td")
+
+    if std_atomic_weight is not None:
+        text = tu.unicode_to_utf8(std_atomic_weight.text)
+        df_record["Standard Atomic Weight"] = text
+
+        notes = std_atomic_weight.find_next_sibling("td")
+
+        if std_atomic_weight is not None:
+            text = tu.unicode_to_utf8(notes.text)
+            df_record["Notes"] = text
+        else:
+            df_record["Notes"] = None
+    else:
+        df_record["Standard Atomic Weight"] = None
+
+    return df_record
+
+
+if __name__ == "__main__":
+    fetch_atomic_dataset()
