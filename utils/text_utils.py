@@ -24,4 +24,6 @@ def beautify_text(text):
 
 
 def parse_float(num_str):
-    return 0
+    num_str = unicode_to_utf8(num_str)
+    num_str = num_str.replace(' ', '').split('(')[0]
+    return float(num_str)
