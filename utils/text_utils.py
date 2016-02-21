@@ -2,7 +2,9 @@ import unicodedata
 
 
 def unicode_to_utf8(text):
-    return unicodedata.normalize("NFKD", text).encode("utf-8", "ignore")
+    text = unicodedata.normalize("NFKD", text).encode("utf-8", "ignore")
+    text = text.strip()
+    return text
 
 
 def beautify_text(text):
