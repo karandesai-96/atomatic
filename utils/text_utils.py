@@ -21,3 +21,7 @@ def beautify_text(text):
     beautified_text = beautified_text.strip()
 
     return beautified_text
+
+
+def parse_float(num_str):
+    return 0
