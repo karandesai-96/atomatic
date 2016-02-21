@@ -31,9 +31,22 @@ def fetch_row(row):
 
     row_data = row.find_all("td")
 
-    # ignoring the row containing blue line
-    if row_data[0].get("colspan") == "9":
+    # ignoring the row containing blue line and other stray rows
+    if len(row_data) < 3 or row_data[0].has_attr("colspan"):
         return None
+
+    row_data, df_record = parse_z_and_symbol(row_data, df_record)
+    df_record = parse_nucleons(row_data, df_record)
+    df_record = parse_isotopic_composition(row_data, df_record)
+
+    # standard atomic weight and additional notes are only present in record
+    # of first isotope of any element
+    if row_data[0] is not None:
+        df_record = parse_std_atomic_weight_and_notes(row, df_record)
+    return df_record
+
+
+def parse_z_and_symbol(row_data, df_record):
 
     if row_data[0].get("valign") == "top":
         # this happens when the record is a new element - Z will be followed by
@@ -55,28 +68,34 @@ def fetch_row(row):
         df_record["Symbol"] = tu.unicode_to_utf8(row_data[2].text)
         row_data.pop(1)
 
+    return row_data, df_record
+
+
+def parse_nucleons(row_data, df_record):
     # third entry in record will be number of nucleons (stored as integer)
+    # no checks required as this entry exists in all valid records
     df_record["Nucleons"] = int(tu.unicode_to_utf8(row_data[2].text))
 
-    # fourth entry in record will be relative atomic mass of that isotope
-    text = tu.unicode_to_utf8(row_data[3].text)
-    text = text.split("(")[0].replace(" ", "")
-    text = float(text)
-    df_record["Relative Atomic Mass"] = text
+    return df_record
 
+
+def parse_relative_atomic_mass(row_data, df_record):
+    # fourth entry in record will be relative atomic mass of that isotope
+    relative_atomic_mass = tu.parse_float(row_data[3].text)
+    df_record["Relative Atomic Mass"] = relative_atomic_mass
+
+    return df_record
+
+
+def parse_isotopic_composition(row_data, df_record):
     # fifth entry in record will be isotopic composition of that isotope
     # try-except block is needed as this entry might be absent
     try:
-        text = tu.unicode_to_utf8(row_data[4].text)
-        text = text.split("(")[0].replace(" ", "")
-        text = float(text)
-        df_record["Isotopic Composition"] = text
+        isotopic_composition = tu.parse_float(row_data[4].text)
+        df_record["Isotopic Composition"] = isotopic_composition
     except ValueError:
         df_record["Isotopic Composition"] = None
 
-    # these entries are only present in record of first isotope of any element
-    if row_data[0] is not None:
-        df_record = parse_std_atomic_weight_and_notes(row, df_record)
     return df_record
 
 
@@ -84,7 +103,7 @@ def parse_std_atomic_weight_and_notes(row, df_record):
     std_atomic_weight = row.find_next_sibling("td")
 
     if std_atomic_weight is not None:
-        text = tu.unicode_to_utf8(std_atomic_weight.text)
+        text = tu.parse_float_list(std_atomic_weight.text)
         df_record["Standard Atomic Weight"] = text
 
         notes = std_atomic_weight.find_next_sibling("td")
