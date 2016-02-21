@@ -32,7 +32,9 @@ def parse_float(num_str):
 
 
 def parse_float_list(list_str):
-    list_str = list_str.replace(' ', '')[1:-1]
+    list_str = list_str.replace(' ', '')
+    list_str = list_str.replace('[', '')
+    list_str = list_str.replace(']', '')
     num_strs = list_str.split(',')
 
     for _ in range(len(num_strs)):
