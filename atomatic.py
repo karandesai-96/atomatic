@@ -8,22 +8,22 @@ def fetch_atomic_dataset():
     url = "http://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl"
 
     if os.path.isfile("outdump/mainsoup.html"):
-        physics_nist_soup = su.get_soup_from_file("mainsoup.html")
+        soup = su.get_soup_from_file("mainsoup.html")
     else:
-        physics_nist_soup = su.get_soup_from_url(url)
-        su.store_content_from_soup(physics_nist_soup, filename="mainsoup.html")
+        soup = su.get_soup_from_url(url)
+        su.store_content_from_soup(soup, filename="mainsoup.html")
 
-    headings = ["Z", "Symbol", "Nucleons", "Relative Atomic Mass", "Isotopic \
-                Composition", "Standard Atomic Weight", "Notes"]
+    headings = ["Z", "Symbol", "Nucleons", "Relative Atomic Mass",
+                "Isotopic Composition", "Standard Atomic Weight", "Notes"]
 
-    atomic_dataset = pd.DataFrame(columns=headings)
+    data_frame = pd.DataFrame(columns=headings)
 
-    rows = physics_nist_soup.find_all("tr")
-    for _ in range(4, 15):
-        df_record = fetch_row(rows[_])
+    for row in soup.find_all("tr"):
+        df_record = fetch_row(row)
         if df_record is not None:
-            print df_record
-    return
+            data_frame = data_frame.append(df_record, ignore_index=True)
+
+    return data_frame
 
 
 def fetch_row(row):
@@ -37,6 +37,7 @@ def fetch_row(row):
 
     row_data, df_record = parse_z_and_symbol(row_data, df_record)
     df_record = parse_nucleons(row_data, df_record)
+    df_record = parse_relative_atomic_mass(row_data, df_record)
     df_record = parse_isotopic_composition(row_data, df_record)
 
     # standard atomic weight and additional notes are only present in record
@@ -120,4 +121,5 @@ def parse_std_atomic_weight_and_notes(row, df_record):
 
 
 if __name__ == "__main__":
-    fetch_atomic_dataset()
+    atomic_dataset = fetch_atomic_dataset()
+    atomic_dataset.to_csv("outdump/dataset.csv", index=False)
