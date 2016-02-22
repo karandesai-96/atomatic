@@ -40,4 +40,6 @@ def parse_float_list(list_str):
     for _ in range(len(num_strs)):
         num_strs[_] = parse_float(num_strs[_])
 
+    if len(num_strs) == 1:
+        return num_strs[0]
     return num_strs
