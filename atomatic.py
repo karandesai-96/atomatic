@@ -77,6 +77,19 @@ def fetch_row(row):
 
 
 def parse_z_and_symbol(row_data, df_record):
+    """
+    * Parses the atomic number Z and the symbol of element. It adds two keys in
+      the dictionary passed as parameter - 'Z' and 'Symbol'. If these entries do
+      not exist in a record (incase of subsequent isotopes of one element), then
+      they are set to None.
+    * Dummy members in the row_data list are appended at start if these entries
+      do not exist, to generalize indexing.
+
+    :param row_data: list of `<td>` tags in a single row.
+    :param df_record: existing dictionary containing already parsed entries.
+    :return: Modified list (after appending dummy members added if any) and
+    dictionary (after adding key-value pairs).
+    """
 
     if row_data[0].get("valign") == "top":
         # this happens when the record is a new element - Z will be followed by
@@ -102,15 +115,33 @@ def parse_z_and_symbol(row_data, df_record):
 
 
 def parse_nucleons(row_data, df_record):
-    # third entry in record will be number of nucleons (stored as integer)
-    # no checks required as this entry exists in all valid records
+    """
+    Parses the number of nucleons present in an element. It adds a key in
+    the dictionary passed as parameter - 'Nucleons'. This entry exists in
+    the third `<td>` tag, in every record of table, no checks are required.
+
+    :param row_data: list of `<td>` tags in a single row.
+    :param df_record: existing dictionary containing already parsed entries.
+    :return: Modified dictionary (after adding key-value pair).
+    """
+
     df_record["Nucleons"] = int(tu.unicode_to_utf8(row_data[2].text))
 
     return df_record
 
 
 def parse_relative_atomic_mass(row_data, df_record):
-    # fourth entry in record will be relative atomic mass of that isotope
+    """
+    Parses relative atomic mass of the isotope. It adds a key in the dictionary
+    passed as parameter - 'Relative Atomic Mass'. This entry exists in the
+    fourth `<td>` tag, in a particular record of table, it might be absent so
+    try-except block is required.
+
+    :param row_data: list of `<td>` tags in a single row.
+    :param df_record: existing dictionary containing already parsed entries.
+    :return: Modified dictionary (after adding key-value pairs).
+    """
+
     relative_atomic_mass = tu.parse_float(row_data[3].text)
     df_record["Relative Atomic Mass"] = relative_atomic_mass
 
@@ -118,8 +149,17 @@ def parse_relative_atomic_mass(row_data, df_record):
 
 
 def parse_isotopic_composition(row_data, df_record):
-    # fifth entry in record will be isotopic composition of that isotope
-    # try-except block is needed as this entry might be absent
+    """
+    Parses isotopic composition of the isotope. It adds a key in the dictionary
+    passed as parameter - 'Isotopic Composition'. This entry exists in the
+    fifth `<td>` tag, in a particular record of table, it might be absent so
+    try-except block is required.
+
+    :param row_data: list of `<td>` tags in a single row.
+    :param df_record: existing dictionary containing already parsed entries.
+    :return: Modified dictionary (after adding key-value pairs).
+    """
+
     try:
         isotopic_composition = tu.parse_float(row_data[4].text)
         df_record["Isotopic Composition"] = isotopic_composition
