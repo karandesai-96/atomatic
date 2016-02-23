@@ -170,6 +170,19 @@ def parse_isotopic_composition(row_data, df_record):
 
 
 def parse_std_atomic_weight_and_notes(row, df_record):
+    """
+    * Parses the standard atomic weight chosen for element, which is chosen
+      among atomic weight of all its isotopes. It adds a key in the dictionary
+      passed as parameter - 'Standard Atomic Weight'. Also parses any
+      additional notes is present and adds a key - 'Notes'.
+    * These entries exist in the last two `<td>` tags, in the record
+      containing first isotope of the corresponding element.
+
+    :param row: single `<tr>` tag containing a single record of the table.
+    :param df_record: existing dictionary containing already parsed entries.
+    :return: Modified dictionary (after adding key-value pair).
+    """
+
     std_atomic_weight = row.find_next_sibling("td")
 
     if std_atomic_weight is not None:
