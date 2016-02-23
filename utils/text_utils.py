@@ -2,12 +2,29 @@ import unicodedata
 
 
 def unicode_to_utf8(text):
+    """
+    Converts unicode string to utf8 string. Text from an html tag is
+    available as unicode string.
+    * Example : u'sample text' => "sample text"
+
+    :param text: unicode string
+    :return: text: utf8 string
+    """
+
     text = unicodedata.normalize("NFKD", text).encode("utf-8", "ignore")
     text = text.strip()
     return text
 
 
 def beautify_text(text):
+    """
+    Removes Trailing spaces, provides single spaces before capitalizations.
+    * Example : "   SampleText  Foo   Bar " => "Sample Text Foo Bar"
+
+    :param text: string with inconsistent spacing
+    :return: beautified_text: formatted string as described
+    """
+
     words = text.split()
     no_spaces_text = ""
     for word in words:
@@ -26,12 +43,31 @@ def beautify_text(text):
 
 
 def parse_float(num_str):
+    """
+    Parses a string representing a decimal number to float. The available
+    data also has certain parenthesis which can be skipped out, so stray
+    whitespaces and parenthesis are taken care of.
+    * Example : "28.111 996 4(23)" => 28.1119964
+
+    :param num_str: string representing a decimal number
+    :return: num_str: float obtained as described
+    """
+
     num_str = unicode_to_utf8(num_str)
-    num_str = num_str.replace(' ', '').split('(')[0]
-    return float(num_str)
+    num_str = float(num_str.replace(' ', '').split('(')[0])
+    return num_str
 
 
 def parse_float_list(list_str):
+    """
+    Uses parse_float method to parse a string representing a list of decimal
+    numbers to a list of float.
+    * Example : "  [2.300 123 6, 8.234 54(80)] " => [2.3001236, 8.23454]
+
+    :param list_str: string representing list of decimal numbers
+    :return: if only one element, then the number itself, else a list of floats
+    """
+
     list_str = list_str.replace(' ', '')
     list_str = list_str.replace('[', '')
     list_str = list_str.replace(']', '')
