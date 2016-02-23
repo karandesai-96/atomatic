@@ -12,6 +12,7 @@ def unicode_to_utf8(text):
     """
 
     text = unicodedata.normalize("NFKD", text).encode("utf-8", "ignore")
+    # trim trailing spaces
     text = text.strip()
     return text
 
@@ -25,18 +26,17 @@ def beautify_text(text):
     :return: beautified_text: formatted string as described
     """
 
-    words = text.split()
-    no_spaces_text = ""
-    for word in words:
-        if word != "":
-            no_spaces_text += word
+    # remove all spaces
+    text = text.replace(' ', '')
 
     beautified_text = ""
-    for i in range(len(no_spaces_text)):
-        if 'A' <= no_spaces_text[i] <= 'Z':
-            beautified_text += " " + no_spaces_text[i]
+    for i in range(len(text)):
+        # add white space before a capital letter
+        if 'A' <= text[i] <= 'Z':
+            beautified_text += " " + text[i]
         else:
-            beautified_text += no_spaces_text[i]
+            beautified_text += text[i]
+    # remove leading white space
     beautified_text = beautified_text.strip()
 
     return beautified_text
@@ -68,11 +68,13 @@ def parse_float_list(list_str):
     :return: if only one element, then the number itself, else a list of floats
     """
 
+    # form list of individual strings representing decimals
     list_str = list_str.replace(' ', '')
     list_str = list_str.replace('[', '')
     list_str = list_str.replace(']', '')
     num_strs = list_str.split(',')
 
+    # using parse_float to obtain corresponding float
     for _ in range(len(num_strs)):
         num_strs[_] = parse_float(num_strs[_])
 
