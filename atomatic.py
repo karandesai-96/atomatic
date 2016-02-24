@@ -6,8 +6,8 @@ import pandas as pd
 
 def fetch_atomic_dataset():
     """
-    * Fetches the atomic dataset available at given url in html tabular format
-      and parses it into a pandas DataFrame.
+    * Fetches the atomic dataset available at mentioned url in html tabular
+      format and parses it into a pandas DataFrame.
     * It uses methods from soup_utils.py and forms a BeautifulSoup using request
       response content of url.
     * It iteratively goes through each row (`<tr>` tag) and makes calls to
