@@ -28,4 +28,4 @@ def test_parse_float_list():
     assert parsed_float_list == [0.23183212, 0.82302]
 
     parsed_float_list = tu.parse_float_list(u'[248.012 93(70)] ')
-    assert parsed_float_list == [248.01293]
+    assert parsed_float_list == 248.01293
