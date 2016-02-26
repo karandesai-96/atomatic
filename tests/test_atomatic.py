@@ -1,11 +1,12 @@
+import os
+from bs4 import BeautifulSoup
 from atomatic import (parse_z_and_symbol,
                       parse_nucleons,
                       parse_relative_atomic_mass,
                       parse_isotopic_composition,
                       parse_std_atomic_weight_and_notes)
-from bs4 import BeautifulSoup
 
-test_file = open("test-data/atomatic/test_atomatic.html")
+test_file = open(os.path.join(os.curdir, "bin/test-data/test_atomatic.html"))
 markup = test_file.read()
 test_file.close()
 

@@ -21,7 +21,7 @@ def fetch_atomic_dataset():
 
     # writes request response content to a file and uses it subsequently,
     # done for speeding up and avoiding multiple requests while debugging
-    if os.path.isfile("outdump/mainsoup.html"):
+    if os.path.isfile(os.path.join(os.curdir, "bin/mainsoup.html")):
         soup = su.get_soup_from_file("mainsoup.html")
     else:
         soup = su.get_soup_from_url(url)
@@ -204,4 +204,4 @@ def parse_std_atomic_weight_and_notes(row, df_record):
 
 if __name__ == "__main__":
     atomic_dataset = fetch_atomic_dataset()
-    atomic_dataset.to_csv("outdump/dataset.csv", index=False)
+    atomic_dataset.to_csv("bin/dataset.csv", index=False)

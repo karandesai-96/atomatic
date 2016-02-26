@@ -60,11 +60,11 @@ docs/_build/
 # PyBuilder
 target/
 
-# All html and csv files -- they are generated in outdump
+# All html and csv files -- they are generated in bin
 *.html
 *.csv
 
 # Do not ignore any html files inside this directory as
 # contain html files useful for testing
-!test-data/*/*.html
-!test-data/*/*.csv
+!bin/test-data/*.html
+!bin/test-data/*.csv
