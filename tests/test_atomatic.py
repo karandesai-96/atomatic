@@ -4,7 +4,10 @@ from atomatic import (parse_z_and_symbol,
                       parse_nucleons,
                       parse_relative_atomic_mass,
                       parse_isotopic_composition,
-                      parse_std_atomic_weight_and_notes)
+                      parse_std_atomic_weight_and_notes,
+                      fetch_row, fetch_atomic_dataset)
+import pandas as pd
+
 
 test_file = open(os.path.join(os.curdir, "bin/test-data/test_atomatic.html"))
 markup = test_file.read()
@@ -12,6 +15,9 @@ test_file.close()
 
 test_row = BeautifulSoup(markup, "html.parser").find("tr")
 test_row_data = test_row.find_all("td")
+
+expected_atomic_dataset = pd.read_csv(os.path.join(os.curdir,
+                                           "bin/test-data/expected_result.csv"))
 
 
 def test_parse_z_and_symbol():
@@ -52,3 +58,21 @@ def test_parse_std_atomic_weight_and_notes():
                                                         obtained_result)
     assert obtained_result["Standard Atomic Weight"] == 4.002602
     assert obtained_result["Notes"] == "g,r"
+
+
+def test_fetch_row():
+    obtained_result = fetch_row(test_row)
+    assert obtained_result["Z"] == 2
+    assert obtained_result["Symbol"] == 'He'
+    assert obtained_result["Nucleons"] == 3
+    assert obtained_result["Relative Atomic Mass"] == 3.0160293201
+    assert obtained_result["Isotopic Composition"] == 0.00000134
+    assert obtained_result["Standard Atomic Weight"] == 4.002602
+    assert obtained_result["Notes"] == "g,r"
+
+
+def test_fetch_atomic_dataset():
+    obtained_atomic_dataset = fetch_atomic_dataset()
+
+    for _ in range(len(obtained_atomic_dataset)):
+        assert obtained_atomic_dataset.get(_) == expected_atomic_dataset.get(_)
