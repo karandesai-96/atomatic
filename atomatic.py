@@ -1,5 +1,6 @@
 from utils import soup_utils as su
 from utils import text_utils as tu
+from utils import db_utils as dbu
 import os
 import pandas as pd
 
@@ -205,3 +206,4 @@ def parse_std_atomic_weight_and_notes(row, df_record):
 if __name__ == "__main__":
     atomic_dataset = fetch_atomic_dataset()
     atomic_dataset.to_csv("bin/dataset.csv", index=False)
+    dbu.databrame_to_sql_table(atomic_dataset)
