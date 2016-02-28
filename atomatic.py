@@ -187,7 +187,7 @@ def parse_std_atomic_weight_and_notes(row, df_record):
 
     if std_atomic_weight is not None:
         text = tu.parse_float_list(std_atomic_weight.text)
-        df_record["Standard Atomic Weight"] = text
+        df_record["Standard Atomic Weight"] = str(text)
 
         notes = std_atomic_weight.find_next_sibling("td")
 
