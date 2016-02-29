@@ -56,7 +56,7 @@ def test_parse_std_atomic_weight_and_notes():
 
     obtained_result = parse_std_atomic_weight_and_notes(test_row,
                                                         obtained_result)
-    assert obtained_result["Standard Atomic Weight"] == 4.002602
+    assert obtained_result["Standard Atomic Weight"] == "4.002602"
     assert obtained_result["Notes"] == "g,r"
 
 
@@ -67,7 +67,7 @@ def test_fetch_row():
     assert obtained_result["Nucleons"] == 3
     assert obtained_result["Relative Atomic Mass"] == 3.0160293201
     assert obtained_result["Isotopic Composition"] == 0.00000134
-    assert obtained_result["Standard Atomic Weight"] == 4.002602
+    assert obtained_result["Standard Atomic Weight"] == "4.002602"
     assert obtained_result["Notes"] == "g,r"
 
 
