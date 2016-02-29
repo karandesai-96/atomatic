@@ -3,7 +3,7 @@ import json
 import sqlalchemy as sqlalc
 
 
-def databrame_to_sql_table(dataframe):
+def dataframe_to_sql_table(dataframe, name):
     # obtain credentials
     json_data = open(os.path.join(os.path.dirname(os.path.realpath(__file__)),
                                   "db_credentials.json"), 'r')
@@ -16,5 +16,4 @@ def databrame_to_sql_table(dataframe):
                                   ':' + cred[u'port'] + '/' + cred[u'db'])
 
     # create table in db
-    dataframe.to_sql(name="Atomic Weights and Isotopic Composition",
-                     con=engine, if_exists="replace", index=False, chunksize=1)
+    dataframe.to_sql(name=name, con=engine, if_exists="replace", index=False)
