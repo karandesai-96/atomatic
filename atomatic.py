@@ -1,5 +1,3 @@
-import json
-import sqlalchemy as sqlalc
 from utils import soup_utils as su
 from utils import text_utils as tu
 from utils import db_utils as dbu

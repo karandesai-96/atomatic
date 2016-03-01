@@ -72,7 +72,21 @@ def test_fetch_row():
 
 
 def test_fetch_atomic_dataset():
+
+    # first time to ensure the soup is generated from request response content
+    # and mainsoup.html gets generated
+    if os.path.isfile(os.path.join(os.curdir, "bin/mainsoup.html")):
+        os.remove(os.path.join(os.curdir, "bin/mainsoup.html"))
     obtained_atomic_dataset = fetch_atomic_dataset()
 
-    for _ in range(len(obtained_atomic_dataset)):
+    # getting alternate rows just to save time, as all assertions need to be
+    # done just once, even rows here, odd rows next
+    for _ in range(0, len(obtained_atomic_dataset), 2):
+        assert obtained_atomic_dataset.get(_) == expected_atomic_dataset.get(_)
+
+    # second time to ensure the soup is generated from mainsoup.html
+    # to simply increase code coverage
+    obtained_atomic_dataset = fetch_atomic_dataset()
+
+    for _ in range(1, len(obtained_atomic_dataset), 2):
         assert obtained_atomic_dataset.get(_) == expected_atomic_dataset.get(_)
