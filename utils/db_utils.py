@@ -4,10 +4,15 @@ import sqlalchemy as sqlalc
 import sqlalchemy_utils as sqlutil
 
 
-def df_to_sql(dataframe, name):
+def df_to_sql(dataframe, name, testing=False):
     # obtain credentials
-    json_data = open(os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                                  "db_credentials.json"), 'r')
+    if testing:
+        json_data = open(os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), "tests/test_db_credentials.json"), 'r')
+    else:
+        json_data = open(os.path.join(os.path.dirname(
+                os.path.realpath(__file__)), "db_credentials.json"), 'r')
+
     cred = json.loads(json_data.read())
     json_data.close()
 

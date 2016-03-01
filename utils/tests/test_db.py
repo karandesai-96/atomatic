@@ -24,7 +24,7 @@ def test_df_to_sql():
         test_table = sqlalc.Table("Test Table", sqlalc.MetaData(engine))
         test_table.drop()
 
-    dbu.df_to_sql(test_dataframe, "Test Table")
+    dbu.df_to_sql(test_dataframe, "Test Table", testing=True)
     assert engine.dialect.has_table(engine, "Test Table")
 
     # teardown
