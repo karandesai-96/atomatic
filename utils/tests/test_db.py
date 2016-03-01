@@ -7,7 +7,7 @@ import utils.db_utils as dbu
 test_dataframe = pd.DataFrame({"Int": [1, 2, 3], "Char": ['a', 'b', 'c']})
 
 
-def test_dataframe_to_sql_table():
+def test_df_to_sql():
     # obtain test credentials
     json_data = open(os.path.join(os.path.dirname(os.path.realpath(__file__)),
                                   "test_db_credentials.json"), 'r')
@@ -24,7 +24,7 @@ def test_dataframe_to_sql_table():
         test_table = sqlalc.Table("Test Table", sqlalc.MetaData(engine))
         test_table.drop()
 
-    dbu.dataframe_to_sql_table(test_dataframe, "Test Table")
+    dbu.df_to_sql(test_dataframe, "Test Table")
     assert engine.dialect.has_table(engine, "Test Table")
 
     # teardown

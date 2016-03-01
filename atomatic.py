@@ -208,5 +208,4 @@ def parse_std_atomic_weight_and_notes(row, df_record):
 if __name__ == "__main__":
     atomic_dataset = fetch_atomic_dataset()
     atomic_dataset.to_csv("bin/dataset.csv", index=False)
-    dbu.dataframe_to_sql_table(atomic_dataset,
-                               "Atomic Weights and Isotopic Composition")
+    dbu.df_to_sql(atomic_dataset, "Atomic Weights and Isotopic Composition")

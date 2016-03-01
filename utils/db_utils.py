@@ -4,7 +4,7 @@ import sqlalchemy as sqlalc
 import sqlalchemy_utils as sqlutil
 
 
-def dataframe_to_sql_table(dataframe, name):
+def df_to_sql(dataframe, name):
     # obtain credentials
     json_data = open(os.path.join(os.path.dirname(os.path.realpath(__file__)),
                                   "db_credentials.json"), 'r')
