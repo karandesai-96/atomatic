@@ -24,7 +24,8 @@ install:
   - pip install MySQL-python
 
 before_script:
-  - mysql -u root -e "create database IF NOT EXISTS tardis;"
+  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('password') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
+  - mysql -u root -ppassword -e "create database IF NOT EXISTS tardis;"
 
 script:
   - nosetests --with-coverage
